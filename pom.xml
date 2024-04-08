@@ -272,6 +272,14 @@
 
     </plugins>
   </build>
+ 
+  <distributionManagement>
+        <repository>
+            <id>spring-petclinic</id>
+            <name>Spring Petclinic Repository</name>
+            <url>https://github.com/laslanyan/spring-petclinic/tree/feature</url>
+        </repository>
+  </distributionManagement>
 
   <licenses>
     <license>
