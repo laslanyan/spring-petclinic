@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.1.0-SNAPSHOT</version>
+  <version>4.2.0-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -44,6 +44,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-deploy-plugin</artifactId>
+      <version>3.1.1</version>
+      <type>maven-plugin</type>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -131,12 +137,10 @@
       <artifactId>mysql</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -269,25 +273,23 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
- 
   <distributionManagement>
-        <repository>
-            <id>spring-petclinic</id>
-            <name>Spring Petclinic Repository</name>
-            <url>https://github.com/laslanyan/spring-petclinic/tree/feature</url>
-        </repository>
+    <repository>
+    <uniqueVersion>false</uniqueVersion>
+    <id>github</id>
+    <name>spring-petclinic Repository</name>
+    <url>https://maven.pkg.github.com/laslanyan/spring-petclinic</url>
+    <layout>default</layout>
+    </repository>
   </distributionManagement>
-
   <licenses>
-    <license>
+   <license>
       <name>Apache License, Version 2.0</name>
       <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
+   </license>
   </licenses>
- 
   <scm>
     <connection>scm:git:git@github.com:laslanyan/spring-petclinic.git</connection>
     <developerConnection>scm:git:git@github.com:laslanyan/spring-petclinic.git</developerConnection>
@@ -453,5 +455,4 @@
       </build>
     </profile>
   </profiles>
-
 </project>
