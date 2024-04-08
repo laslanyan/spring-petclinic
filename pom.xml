@@ -279,6 +279,12 @@
       <url>https://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
+ 
+  <scm>
+    <connection>scm:git:git@github.com:laslanyan/spring-petclinic.git</connection>
+    <developerConnection>scm:git:git@github.com:laslanyan/spring-petclinic.git</developerConnection>
+    <url>https://github.com/laslanyan/spring-petclinic</url>
+  </scm>
 
   <repositories>
     <repository>
