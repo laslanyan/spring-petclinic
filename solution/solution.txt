@@ -1,0 +1,19 @@
+MAVEN TASK
+
+1. Install latest Java and Mvn version ( Done by simple command line commands ) 
+
+2. Go to https://github.com/spring-projects/spring-petclinic, fork it and clone the forked repo. ( Done )
+
+3. Perform validation to check if the project is correct. ( Done by mvn compile command in our mvn project directory ) ( Can be seen in mvn-compile.png ) 
+
+4. Build JAR artifact from source code, run the application locally and see the web interface in the browser. ( Build JAR Artifact by running mvn package command can be seen mvn-package.png ) then run java -jar target/spring-petclinic-3.2.0-SNAPSHOT.jar command and access it through localhost:8080 ( can be seen in pet-clinic ) 
+
+5. Increase project Major version (e.g. from 3.2.0 to 4.0.0) without interactive mode. Use release plugin. ( Changed conf in pom.xml, added maven release plugin , then ran mvn release:update-versions -DautoVersionSubmodules=true -DdevelopmentVersion=4.0.0-SNAPSHOT ) command to update release version ( can be seen in major-4.0.0-SNAPSHOT.png )	
+
+6. In the pom file add <scm> section with repo address. Prepare code to release. ( Added my git repo in <scm> section ) ( Can be seen in feature branch commits “Adding scm….”
+
+7. Try to prepare a release in non-interactive mode. ( with command mvn release:prepare -DautoVersionSubmodules=true -DdevelopmentVersion=4.1.0-SNAPSHOT -B ) ( can be seen in non-interactive.png )
+
+8. Try to perform the release of artifacts ( configured settings.xml file adding GitHub credentials ) ( and some plugins in pom.xml , then ran mvn deploy:deploy-file \-Dfile=./target/spring-petclinic-4.2.0-SNAPSHOT.jar \-DpomFile=./pom.xml \-DrepositoryId=github \-Durl=https://maven.pkg.github.com/laslanyan/spring-petclinic \-Dtoken=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, after running this command my artifacts were deployed into repo ( can be checked https://github.com/laslanyan/spring-petclinic/packages/2117419 ) (artifact.png). ( Also it’s important to set GitHub PAT permissions to be able to automate pushing the artifact via mvn commands ) 
+
+9. Perform release cleanup ( by command mvn release:clean , can be seen in clean.png ) ( cleaning up temporary files or directories generated during the release process, and ensuring that any release-related configurations or settings are reverted to their original state. This helps maintain a clean and consistent development environment for future work ) 
