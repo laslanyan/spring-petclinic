@@ -1,0 +1,11 @@
+* Create Dockerfile for Spring-petclinic application using pre-built artifact                
+  ( Done in Maven Task ) ( Created Dockerfile )
+
+* 
+  Build application outside of container ( Built this using my Dockerfile by       
+  running command docker build -t spring-petclinic-image . ( can be seen in 
+  build-image(task1).png )
+
+* Copy artifact from target folder into image and make it work inside 
+  container ( Done ) ran docker run -d -p 8080:8080 spring-petclinic and   
+  checked my local host ( can be seen in docker-run(task1).png )
