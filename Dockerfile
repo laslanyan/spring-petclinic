@@ -13,20 +13,17 @@ COPY ./ ./
 # Build the project
 RUN ./mvnw clean package 
 
-# Use a smaller base image for the final stage
-FROM alpine:latest
-
-# Install openjdk17-jre-headless
-RUN apk --no-cache add openjdk17-jre-headless
+# Use an image for final stage
+FROM eclipse-temurin:17.0.10_7-jre
 
 # Set the working directory
-WORKDIR /home
+WORKDIR /app
 
 # Copy the JAR file from the builder stage
-COPY --from=builder /tmp/target/spring-*.jar ./spring-petclinic-app.jar
+COPY --from=builder /tmp/target/spring-*.jar ./spring-petclinic-v2.jar
 
 # Expose port 8080
 EXPOSE 8080
 
 # Run the application
-CMD [ "/usr/bin/java", "-jar", "/home/spring-petclinic-app.jar" ]
+CMD [ "java", "-jar", "/app/spring-petclinic-v2.jar" ]
