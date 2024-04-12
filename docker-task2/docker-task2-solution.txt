@@ -1,0 +1,7 @@
+* Create multi-stage Dockerfile for Spring-petclinic application ( Done )
+
+* Application should be built as part of first stage ( Done ) 
+
+* Final image should contain only required files and based on minimal 
+
+* possible base image ( Done ) ( can be seen multistage.png )
