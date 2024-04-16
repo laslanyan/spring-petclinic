@@ -1,0 +1,7 @@
+* Create docker-compose configuration that will automatically start multiple containers 
+  ( Done with configurin docker-compose.yml file, then running docker compose up -d )  
+
+* Run two containers: application + DB ( Can be seen in yaml.png )
+
+* Provide credentials as environment variables, so DB image can be
+  configured with custom credentials and application can connect to DB automatically ( Done ) 
