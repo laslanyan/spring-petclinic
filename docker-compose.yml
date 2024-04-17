@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   # Application service
-  v5:
+  final:
     build: ./
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
-      - MYSQL_USER=root
-      - MYSQL_PASS=petclinic
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
     ports:
       - "8080:8080"  # Expose application port
     depends_on:
@@ -17,8 +17,9 @@ services:
   mydb:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=petclinic
-      - MYSQL_USER=petclinic
-      - MYSQL_ROOT_PASSWORD=petclinic 
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - "3306:3306"  # Expose database port
