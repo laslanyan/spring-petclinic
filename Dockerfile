@@ -11,7 +11,7 @@ WORKDIR /tmp
 COPY ./ ./
 
 # Build the project
-RUN ./mvnw clean package 
+RUN --mount=type=cache,target=/root/.m2 ./mvnw clean package -DskipTests
 
 # Use an image for final stage
 FROM eclipse-temurin:17.0.10_7-jre
@@ -20,10 +20,10 @@ FROM eclipse-temurin:17.0.10_7-jre
 WORKDIR /app
 
 # Copy the JAR file from the builder stage
-COPY --from=builder /tmp/target/spring-*.jar ./spring-petclinic-v5.jar
+COPY --from=builder /tmp/target/spring-*.jar ./spring-petclinic.jar
 
 # Expose port 8080
 EXPOSE 8080
 
 # Run the application
-CMD [ "java", "-jar", "/app/spring-petclinic-v5.jar" ]
+CMD [ "java", "-jar", "/app/spring-petclinic.jar" ]
