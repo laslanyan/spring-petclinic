@@ -276,12 +276,13 @@
     </plugins>
   </build>
   <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8082/repository/maven-snapshots/</url>
+    </snapshotRepository>
     <repository>
-    <uniqueVersion>false</uniqueVersion>
-    <id>github</id>
-    <name>spring-petclinic Repository</name>
-    <url>https://maven.pkg.github.com/laslanyan/spring-petclinic</url>
-    <layout>default</layout>
+      <id>nexus-releases</id>
+      <url>http://localhost:8082/repository/maven-releases/</url>
     </repository>
   </distributionManagement>
   <licenses>
@@ -298,6 +299,10 @@
   </scm>
 
   <repositories>
+    <repository>
+      <id>maven-group</id>
+      <url>http://localhost:8082/repository/maven-group/</url>
+    </repository>
     <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
