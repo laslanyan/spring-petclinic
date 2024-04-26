@@ -142,7 +142,16 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
   </dependencies>
-
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8082/repository/maven-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://localhost:8082/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
   <build>
     <plugins>
       <plugin>
@@ -275,15 +284,6 @@
       </plugin>
     </plugins>
   </build>
-  <distributionManagement>
-    <repository>
-    <uniqueVersion>false</uniqueVersion>
-    <id>github</id>
-    <name>spring-petclinic Repository</name>
-    <url>https://maven.pkg.github.com/laslanyan/spring-petclinic</url>
-    <layout>default</layout>
-    </repository>
-  </distributionManagement>
   <licenses>
    <license>
       <name>Apache License, Version 2.0</name>
