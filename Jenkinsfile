@@ -47,6 +47,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                     sh "echo $NEXUS_PASSWORD | docker login -u $NEXUS_USERNAME --password-stdin 192.168.56.3:8083/repository/jenkins/"
+                    sh "docker tag spring-petclinic:${GIT_COMMIT} 192.168.56.3:8083/repository/jenkins/spring-petclinic:${GIT_COMMIT}"
                     sh "docker push 192.168.56.3:8083/repository/jenkins/spring-petclinic:${GIT_COMMIT}"
                 }
             }
