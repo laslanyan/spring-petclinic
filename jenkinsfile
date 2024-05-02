@@ -31,6 +31,9 @@ pipeline {
         stage('Push image to dockerhub') {
             steps {
                 script {
+                    checkout([$class: 'GitSCM',
+                    branches: [[name: 'feature']],
+                    userRemoteConfigs: [[url: 'https://github.com/laslanyan/spring-petclinic.git']]])
                     sh 'echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED_USR --password-stdin'
                     sh 'docker tag laslanyan/dockerhub-image $MAIN_BRANCH'
                     sh 'docker push $MAIN_BRANCH'
@@ -39,6 +42,9 @@ pipeline {
         }
         stage('Push image to nexus') {
             steps {
+                checkout([$class: 'GitSCM',
+                branches: [[name: 'jenkins']],
+                userRemoteConfigs: [[url: 'https://github.com/laslanyan/spring-petclinic.git']]])
                 withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                     sh "echo $NEXUS_PASSWORD | docker login -u $NEXUS_USERNAME --password-stdin 192.168.56.3:8083/repository/jenkins/"
                     sh "docker push 192.168.56.3:8083/repository/jenkins/spring-petclinic:${GIT_COMMIT}"
