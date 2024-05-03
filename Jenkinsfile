@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Build image for nexus') {
             steps {
-                sh "docker build -t $IMAGE_NEXUS ./"
+                sh 'docker build -t $IMAGE_NEXUS ./'
             }
         }
         stage('Push image to nexus') {
