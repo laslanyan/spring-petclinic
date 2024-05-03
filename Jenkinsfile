@@ -26,29 +26,29 @@ pipeline {
         }
         stage('Build image for dockerhub') {
             steps {
-                sh 'docker build -t laslanyan/dockerhub-image .'
+                sh 'docker build -t $IMAGE_DOCKERHUB .'
             }
         }
         stage('Push image to dockerhub') {
             steps {
                 script {
-                    sh 'echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED_USR --password-stdin'
-                    sh 'docker tag laslanyan/dockerhub-image $MAIN_BRANCH'
+                    sh 'docker login -u $DOCKERHUB_CRED_USR -p $DOCKERHUB_CRED_PSW'
+                    sh 'docker tag $IMAGE_DOCKERHUB $MAIN_BRANCH'
                     sh 'docker push $MAIN_BRANCH'
                 }
             }
         }
         stage('Build image for nexus') {
             steps {
-                sh "docker build -t spring-petclinic:${GIT_COMMIT} ./"
+                sh "docker build -t IMAGE_NEXUS ./"
             }
         }
         stage('Push image to nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                    sh "echo $NEXUS_PASSWORD | docker login -u $NEXUS_USERNAME --password-stdin 192.168.56.3:8083/repository/jenkins/"
-                    sh "docker tag spring-petclinic:${GIT_COMMIT} 192.168.56.3:8083/repository/jenkins/spring-petclinic:${GIT_COMMIT}"
-                    sh "docker push 192.168.56.3:8083/repository/jenkins/spring-petclinic:${GIT_COMMIT}"
+                    sh "docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWORD $NEXUS_REPO"
+                    sh "docker tag $IMAGE_NEXUS $NEXUS_REPO_FINAL"
+                    sh "docker push $NEXUS_REPO_FINAL"
                 }
             }
         }
