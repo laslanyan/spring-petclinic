@@ -42,15 +42,15 @@ pipeline {
         }
         stage('Build image for nexus') {
             steps {
-                sh 'docker build -t $IMAGE_NEXUS ./'
+                sh 'docker build -t ${IMAGE_NEXUS} ./'
             }
         }
         stage('Push image to nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                     sh "echo \$NEXUS_PASSWORD | docker login -u \$NEXUS_USERNAME --password-stdin $NEXUS_REPO"
-                    sh "docker tag $IMAGE_NEXUS $NEXUS_REPO_FINAL"
-                    sh "docker push $NEXUS_REPO_FINAL"
+                    sh "docker tag ${IMAGE_NEXUS} ${NEXUS_REPO_FINAL}"
+                    sh "docker push ${NEXUS_REPO_FINAL}"
                 }
             }
         }
