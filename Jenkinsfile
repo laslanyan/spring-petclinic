@@ -14,6 +14,9 @@ pipeline {
             }
         }
         stage('Checkstyle') {
+            when{
+                expression { env.BRANCH_NAME != ${MAIN_BRANCH} }
+            }
             steps {
                 sh 'mvn checkstyle:checkstyle'
                 archiveArtifacts artifacts: 'target/site/checkstyle.html', onlyIfSuccessful: true
