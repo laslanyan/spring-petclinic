@@ -19,41 +19,37 @@ pipeline {
                 archiveArtifacts artifacts: 'target/site/checkstyle.html', onlyIfSuccessful: true
             }
         }
-        stage('Build for dockerhub and nexus') {
+        stage('Build for dockerhub for both branches') {
             steps {
                 sh 'mvn clean package -DskipTests'
             }
         }
         stage('Build image for dockerhub') {
             steps {
-                sh 'docker build -t $IMAGE_DOCKERHUB .'
+                sh 'docker build -t $IMAGE .'
             }
         }
-        stage('Push image to dockerhub') {
+        stage('Push image to dockerhub main') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
                         sh "echo \$DOCKERHUB_CRED_PSW | docker login -u \$DOCKERHUB_CRED_USR --password-stdin"
-                        sh "docker tag $IMAGE_DOCKERHUB $MAIN_BRANCH"
-                        sh "docker push $MAIN_BRANCH"
+                        sh "docker tag $IMAGE ${MAIN_BRANCH}:${GIT_COMMIT}"
+                        sh "docker push ${MAIN_BRANCH}:${GIT_COMMIT}"
                     }
                 }
             }
         }
-        stage('Build image for nexus') {
+        stage('Push image to dockerhub mr') {
             steps {
-                sh 'docker build -t ${IMAGE_NEXUS}:${GIT_COMMIT} ./'
-            }
-        }
-        stage('Push image to nexus') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                    sh "echo \$NEXUS_PASSWORD | docker login -u \$NEXUS_USERNAME --password-stdin $NEXUS_REPO"
-                    sh "docker tag ${IMAGE_NEXUS} ${NEXUS_REPO_FINAL}:${GIT_COMMIT}"
-                    sh "docker push ${NEXUS_REPO_FINAL}:${GIT_COMMIT}"
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
+                        sh "echo \$DOCKERHUB_CRED_PSW | docker login -u \$DOCKERHUB_CRED_USR --password-stdin"
+                        sh "docker tag $IMAGE ${MR_BRANCH}:${GIT_COMMIT}"
+                        sh "docker push ${MR_BRANCH}:${GIT_COMMIT}"
+                    }
                 }
             }
         }
     }
 }
-
