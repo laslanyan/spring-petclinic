@@ -15,7 +15,9 @@ pipeline {
         }
         stage('Checkstyle') {
             when{
-                expression { env.BRANCH_NAME != ${MAIN_BRANCH} }
+                expression { 
+                    env.BRANCH_NAME != "${MAIN_BRANCH}"
+                }
             }
             steps {
                 sh 'mvn checkstyle:checkstyle'
