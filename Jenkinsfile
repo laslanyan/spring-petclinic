@@ -32,15 +32,14 @@ pipeline {
         stage('Push image to dockerhub') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB_CRED_PSW')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
                         sh "echo \$DOCKERHUB_CRED_PSW | docker login -u \$DOCKERHUB_CRED_USR --password-stdin"
                         sh "docker tag $IMAGE_DOCKERHUB $MAIN_BRANCH"
                         sh "docker push $MAIN_BRANCH"
-                        }
                     }
                 }
             }
-
+        }
         stage('Build image for nexus') {
             steps {
                 sh "docker build -t $IMAGE_NEXUS ./"
@@ -57,3 +56,4 @@ pipeline {
         }
     }
 }
+
