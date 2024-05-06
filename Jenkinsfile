@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('Checkstyle') {
             when{
-                expression { 
-                    env.BRANCH_NAME != 'origin/master'
+                not {
+                    branch 'master'
                 }
             }
             steps {
@@ -19,8 +19,8 @@ pipeline {
         }
         stage('Build for dockerhub mr') {
             when {
-                expression {
-                    env.BRANCH_NAME != 'origin/master'
+                not {
+                    branch 'master'
                 }
             }
             steps {
