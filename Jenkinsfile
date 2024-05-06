@@ -6,17 +6,10 @@ pipeline {
         maven 'M3'
     }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: 'jenkins']],
-                          userRemoteConfigs: [[url: 'https://github.com/laslanyan/spring-petclinic.git']]])
-            }
-        }
         stage('Checkstyle') {
             when{
                 expression { 
-                    env.BRANCH_NAME != "${MAIN_BRANCH}"
+                    env.BRANCH_NAME != 'origin/master'
                 }
             }
             steps {
@@ -24,7 +17,12 @@ pipeline {
                 archiveArtifacts artifacts: 'target/site/checkstyle.html', onlyIfSuccessful: true
             }
         }
-        stage('Build for dockerhub for both branches') {
+        stage('Build for dockerhub mr') {
+            when {
+                expression {
+                    env.BRANCH_NAME != 'origin/master'
+                }
+            }
             steps {
                 sh 'mvn clean package -DskipTests'
             }
@@ -34,7 +32,7 @@ pipeline {
                 sh 'docker build -t $IMAGE .'
             }
         }
-        stage('Push image to dockerhub main') {
+        stage('Push image to dockerhub master') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
