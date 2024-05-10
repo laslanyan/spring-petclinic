@@ -33,12 +33,12 @@ pipeline {
             }
         }
         stage('Push image to dockerhub master') {
-            steps { 
-                when { 
-                    not {
-                        branch 'mr'
-                    }
+            when {
+                not {
+                    branch 'mr'
                 }
+            }
+            steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
                         sh "echo \$DOCKERHUB_CRED_PSW | docker login -u \$DOCKERHUB_CRED_USR --password-stdin"
@@ -49,12 +49,12 @@ pipeline {
             }
         }
         stage('Push image to dockerhub mr') {
-            steps {
-                when { 
-                    not {
-                        branch 'master'
-                    }
+            when {
+                not {
+                    branch 'master'
                 }
+            }
+            steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
                         sh "echo \$DOCKERHUB_CRED_PSW | docker login -u \$DOCKERHUB_CRED_USR --password-stdin"
