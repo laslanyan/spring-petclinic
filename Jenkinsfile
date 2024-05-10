@@ -7,7 +7,7 @@ pipeline {
     }
     stages {
         stage('Checkstyle') {
-            when{
+            when {
                 not {
                     branch 'master'
                 }
@@ -34,8 +34,10 @@ pipeline {
         }
         stage('Push image to dockerhub master') {
             steps { 
-                when {
-                    branch 'master'
+                when { 
+                    not {
+                        branch 'mr'
+                    }
                 }
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
@@ -48,8 +50,10 @@ pipeline {
         }
         stage('Push image to dockerhub mr') {
             steps {
-                when {
-                    branch 'mr'
+                when { 
+                    not {
+                        branch 'master'
+                    }
                 }
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CRED_USR', passwordVariable: 'DOCKERHUB_CRED_PSW')]) {
